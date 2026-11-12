@@ -19,7 +19,7 @@ jobs:
       - run: npm test
       - run: npm run build
       - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+        run: npx playwright-core install --with-deps chromium
       - name: Chromium visual and interaction QA
         run: |
           npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/moyushan-preview.log 2>&1 &
