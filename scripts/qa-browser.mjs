@@ -15,7 +15,7 @@ try{
   const page=await context.newPage();
   page.on('pageerror',error=>errors.push('pageerror: '+error.message));
   page.on('console',message=>{if(message.type()==='error')errors.push('console: '+message.text());});
-  const response=await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle',timeout:30000});
+  const response=await page.goto('http://127.0.0.1:4173/?ci=1',{waitUntil:'networkidle',timeout:30000});
   const tag=viewport.width+'x'+viewport.height;
   await page.waitForFunction(()=>['true','error'].includes(document.body.dataset.sceneReady),null,{timeout:45000});
   const state=await page.evaluate(()=>({ready:document.body.dataset.sceneReady,status:document.querySelector('#scene-status')?.textContent}));
@@ -27,15 +27,15 @@ try{
   const first=await page.evaluate(()=>{
    const canvas=document.querySelector('#garden-canvas');
    const gl=canvas.getContext('webgl2')||canvas.getContext('webgl');
-   return {ready:document.body.dataset.sceneReady,webgl:!!gl,metrics:document.querySelector('#metrics')?.textContent};
+   return {ready:document.body.dataset.sceneReady,visualFidelity:document.body.dataset.visualFidelity,webgl:!!gl,metrics:document.querySelector('#metrics')?.textContent};
   });
-  await page.screenshot({path:path.join(root,'morning-'+tag+'.png')});
+  await page.screenshot({path:path.join(root,'morning-'+tag+'.png'),timeout:90000});
   await page.getByRole('button',{name:'薄暮'}).click();
   await page.waitForTimeout(500);
   const pressed=await page.getByRole('button',{name:'薄暮'}).getAttribute('aria-pressed');
-  await page.screenshot({path:path.join(root,'evening-'+tag+'.png')});
+  await page.screenshot({path:path.join(root,'evening-'+tag+'.png'),timeout:90000});
   results.push({viewport,first,eveningPressed:pressed});
-  if(!first.webgl||first.ready!=='true'||pressed!=='true')errors.push('Failed WebGL or UI check at '+tag);
+  if(!first.webgl||first.ready!=='true'||first.visualFidelity!=='ci-software-reduced'||pressed!=='true')errors.push('Failed WebGL or UI check at '+tag);
   await context.close();
  }
 }finally{await browser.close();}

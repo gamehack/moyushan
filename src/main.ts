@@ -10,6 +10,7 @@ const metrics=document.querySelector<HTMLOutputElement>('#metrics');
 const morning=document.querySelector<HTMLButtonElement>('#light-morning');
 const evening=document.querySelector<HTMLButtonElement>('#light-evening');
 if(!canvas||!status||!metrics||!morning||!evening)throw Error('Missing scene UI nodes');
+const ciSoftwareRender = new URLSearchParams(window.location.search).has('ci');
 const scene=new THREE.Scene();
 scene.background=new THREE.Color('#c9d5d0');
 scene.fog=new THREE.FogExp2('#c9d5d0',.012);
@@ -18,8 +19,8 @@ const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'h
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure=1.18;
-renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.8));
+renderer.shadowMap.enabled=!ciSoftwareRender;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.setPixelRatio(ciSoftwareRender ? 0.55 : Math.min(window.devicePixelRatio||1,1.8));
 const controls=new OrbitControls(camera,canvas);
 controls.enableDamping=true;
 controls.dampingFactor=.06;
@@ -29,7 +30,7 @@ controls.minDistance=3;
 controls.maxDistance=28;
 controls.screenSpacePanning=false;
 const sun=new THREE.DirectionalLight(0xfff2d5,3.2);
-sun.position.set(-6,13,7);sun.castShadow=true;
+sun.position.set(-6,13,7);sun.castShadow=!ciSoftwareRender;
 sun.shadow.mapSize.set(2048,2048);
 sun.shadow.camera.left=-22;sun.shadow.camera.right=22;
 sun.shadow.camera.top=22;sun.shadow.camera.bottom=-22;
@@ -91,6 +92,7 @@ function dressShoreWithScannedAssets():void {
 }
 
 async function init(){
+  if(ciSoftwareRender)document.body.dataset.visualFidelity='ci-software-reduced';
  const response=await fetch('/assets/scene.json',{cache:'no-store'});
  if(!response.ok)throw Error('Scene manifest HTTP '+response.status);
  const manifest=parseManifest(await response.json());

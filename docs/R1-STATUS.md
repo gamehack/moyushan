@@ -27,3 +27,8 @@ Poly Haven 官方资产 CC0，允许免费商用及再分发：https://polyhaven
 - 大量重复 GLTF 扫描模型导致 GitHub 软件渲染无法在原等待窗口内完成初始化；减少扫描实例为 6 组石材、3 组灌木（另有各一组基础模型），等待新 CI 截图验证。
 - 浏览器测试显式区分 `sceneReady=true` 和 `sceneReady=error`，在报错时保存截图和错误说明；修复 Playwright `waitForFunction` 超时参数位置。
 - 前次 Actions 43215411229 的 Chromium 回归失败已保留，不视为通过。
+
+## 2026-11-12 软件渲染截图超时处理
+- Actions 43215994149 显示模型初始化成功，Chromium 软件渲染在 1920×1080 截图环节 30 秒超时；不是 TypeScript 编译错误。
+- 引入只用于自动化检查的 `?ci=1` 模式，降至 0.55 DPR 并关闭实时阴影以减轻无 GPU runner 负载；普通用户访问不带此参数，保留完整渲染配置。
+- CI 截图记录 `visualFidelity=ci-software-reduced`，不可把这种低质量截图作为最终美术验收或真实 GPU 性能证据。
