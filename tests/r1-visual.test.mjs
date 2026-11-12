@@ -11,6 +11,9 @@ test('R1 prototype includes roof tiles and a moon gate',()=>{
 test('preview declares that it is not final realistic art',()=>{
  assert.match(file('../index.html'),/非最终写实成品/);
 });
-test('no unverified third-party meshes are shipped',()=>{
- assert.deepEqual(JSON.parse(file('../public/assets/scene.json')).models,[]);
+test('shipped downloaded models have only verified CC0 licenses',()=>{
+ const models=JSON.parse(file('../public/assets/scene.json')).models;
+ const ledger=JSON.parse(file('../docs/CC0-IMPORTS.json'));
+ assert.equal(models.length,ledger.assets.length);
+ assert.ok(ledger.assets.every(x=>x.license==='CC0-1.0'));
 });
