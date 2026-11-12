@@ -3,19 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#e7e6df" />
-  <title>摸鱼山 · 半日闲｜美术技术验证</title>
+  <meta name="theme-color" content="#c9d5d0" />
+  <meta name="description" content="摸鱼山 · 半日闲，苏州园林临水茶亭 3D 美术技术验证。" />
+  <title>摸鱼山 · 半日闲｜临水茶亭</title>
 </head>
 <body>
   <main id="app">
-    <canvas id="garden-canvas" aria-label="可交互三维园林场景"></canvas>
+    <canvas id="garden-canvas" aria-label="三维园林，可鼠标拖动旋转并滚轮缩放"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
     <section class="intro" aria-live="polite">
-      <p class="eyebrow">MOYUSHAN · R0</p>
+      <p class="eyebrow">MOYUSHAN / SUZHOU GARDEN STUDY</p>
+      <p class="marker">临水而居 · 此间半日</p>
       <h1>半日闲</h1>
-      <p>临水茶亭 · 苏州园林美术验证</p>
-      <p id="scene-status" class="status">正在检测 3D 场景资源…</p>
-      <small>当前为工程技术底座，非最终画面；美术未达标前不发布。</small>
+      <p class="subtitle">一亭 · 一池 · 一盏茶</p>
+      <p id="scene-status" class="status">正在建立园林空间…</p>
     </section>
+    <section class="controls" aria-label="场景设置">
+      <p class="control-hint">拖动旋转视角 / 滚轮缩放</p>
+      <div class="segmented" role="group" aria-label="光照场景">
+        <button type="button" id="light-morning" aria-pressed="true">晨光</button>
+        <button type="button" id="light-evening" aria-pressed="false">薄暮</button>
+      </div>
+    </section>
+    <aside class="disclaimer">R1 / 美术技术预览 · 非最终写实成品</aside>
     <output id="metrics" class="metrics" aria-label="场景统计"></output>
   </main>
   <script type="module" src="/src/main.ts"></script>
