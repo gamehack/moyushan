@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#e7e6df" />
+  <title>摸鱼山 · 半日闲｜美术技术验证</title>
+</head>
+<body>
+  <main id="app">
+    <canvas id="garden-canvas" aria-label="可交互三维园林场景"></canvas>
+    <section class="intro" aria-live="polite">
+      <p class="eyebrow">MOYUSHAN · R0</p>
+      <h1>半日闲</h1>
+      <p>临水茶亭 · 苏州园林美术验证</p>
+      <p id="scene-status" class="status">正在检测 3D 场景资源…</p>
+      <small>当前为工程技术底座，非最终画面；美术未达标前不发布。</small>
+    </section>
+    <output id="metrics" class="metrics" aria-label="场景统计"></output>
+  </main>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

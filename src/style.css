@@ -1,0 +1,11 @@
+:root { font-family: "Noto Serif SC", "Songti SC", "STSong", serif; color: #272d28; background: #e7e6df; }
+* { box-sizing: border-box; }
+html, body, #app { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+#garden-canvas { display: block; width: 100%; height: 100%; outline: none; }
+.intro { position: absolute; top: clamp(24px,5vw,72px); left: clamp(24px,7vw,120px); max-width: min(520px,calc(100vw - 48px)); pointer-events: none; }
+.eyebrow { color: #727d73; letter-spacing: .22em; font: 600 11px system-ui, sans-serif; }
+h1 { font-size: clamp(42px,6vw,86px); font-weight: 400; letter-spacing: .13em; margin: 12px 0 18px; }
+.intro > p:nth-of-type(2) { font-size: clamp(15px,1.5vw,19px); letter-spacing: .18em; }
+.status { margin-top: 32px; font: 14px/1.8 system-ui, sans-serif; color: #535f56; }
+small { display: block; color: #7c857c; font: 11px/1.8 system-ui, sans-serif; }
+.metrics { position: absolute; right: 24px; bottom: 22px; font: 12px/1.7 ui-monospace,monospace; color: #6e7971; }
