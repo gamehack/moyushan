@@ -33,7 +33,7 @@
         0.05,
         -3.2
       ],
-      "scale": 1.5,
+      "scale": 8,
       "castShadow": true,
       "receiveShadow": true
     }

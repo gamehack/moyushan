@@ -151,7 +151,7 @@ export function createTeaGarden():GardenSlice {
  const root=new THREE.Group();root.name='临水茶亭 R1 建筑场景样板';
  block(root,'园林地面',new THREE.MeshStandardMaterial({color:0x888e7d,roughness:1}),50,.25,35,0,-.2,-1);
  const pond=water(root);screen(root);pavilion(root);
- trees(root,41,-11,-4.1,7.3);trees(root,206,11,-4.7,8.1);trees(root,911,12.8,7.2,7.5);
+ trees(root,41,-11,-4.1,7.3);trees(root,206,11,-4.7,8.1);trees(root,911,14.6,-4.8,7.5);
  bamboo(root,71,-11,-8,12);bamboo(root,72,11.9,-8,10);
  const path=new THREE.InstancedMesh(new THREE.BoxGeometry(1,.07,1),paleStone,120);
  const r=randomSource(981),o=new THREE.Object3D();let count=0;

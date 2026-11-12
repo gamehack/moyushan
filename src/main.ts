@@ -59,6 +59,39 @@ function resize(){
  renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
 }
 window.addEventListener('resize',resize);resize();
+function dressShoreWithScannedAssets():void {
+  const rock=scene.getObjectByName('rock_moss_set_01');
+  const shrub=scene.getObjectByName('shrub_03');
+  if(!rock||!shrub)return;
+  const oldPebbles=scene.getObjectByName('池岸自然石占位');
+  if(oldPebbles)oldPebbles.visible=false;
+  const rocks:Array<[number,number,number]>=[
+    [-5.2,2.2,.7],[-3,1.5,.76],[-.8,1,.55],[1.6,.8,.72],
+    [4.3,1.1,.8],[6.7,1.9,.65],[9.2,3,.7],[10.3,5,.75],
+    [10,7.6,.68],[7.8,9.3,.8],[4.3,10,.6],[.9,9.9,.67],
+    [-2.8,8.8,.7],[-5,6.2,.73]
+  ];
+  const shrubs:Array<[number,number,number]>=[
+    [-8.8,-5.1,.8],[-7.6,-7.3,1.1],[10.8,-5.7,.9],
+    [9.6,-7.4,.85],[5.7,-8.4,.73],[11.9,1.2,.95]
+  ];
+  function placeCopies(base:THREE.Object3D,locations:Array<[number,number,number]>,prefix:string){
+    locations.forEach(([x,z,scale],i)=>{
+      const copy=base.clone(true);
+      copy.name=prefix+'-'+i;
+      copy.position.set(x,0,z);
+      copy.rotation.y=(i*2.399963229728653)%(2*Math.PI);
+      copy.scale.multiplyScalar(scale);
+      copy.updateMatrixWorld(true);
+      const box=new THREE.Box3().setFromObject(copy);
+      copy.position.y+=.055-box.min.y;
+      scene.add(copy);
+    });
+  }
+  placeCopies(rock,rocks,'cc0-rock');
+  placeCopies(shrub,shrubs,'cc0-shrub');
+}
+
 async function init(){
  const response=await fetch('/assets/scene.json',{cache:'no-store'});
  if(!response.ok)throw Error('Scene manifest HTTP '+response.status);
@@ -67,6 +100,7 @@ async function init(){
  controls.target.fromArray(manifest.camera.target);
  controls.update();
  await loadScene(scene,manifest);
+  dressShoreWithScannedAssets();
  status!.textContent=manifest.models.length
   ?'R1 场景研究版 · 已载入 '+manifest.models.length+' 项版权核验 3D 资源。'
   :'R1 建筑构图样板 · 尚未完成写实模型及材质替换。';

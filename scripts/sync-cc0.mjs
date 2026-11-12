@@ -12,7 +12,7 @@ const UA='Moyushan-AssetImporter/0.1 (+https://github.com/gamehack/moyushan)';
 const API='https://api.polyhaven.com';
 const TARGETS=[
  {id:'rock_moss_set_01',position:[-3.8,.08,3.8],scale:.52},
- {id:'shrub_03',position:[7.1,.05,-3.2],scale:1.5}
+ {id:'shrub_03',position:[7.1,.05,-3.2],scale:8}
 ];
 const MAX_PER_FILE=18*1024*1024,MAX_TOTAL=48*1024*1024;
 let downloadedBytes=0;
@@ -78,8 +78,8 @@ async function importModel(target){
  const includes=includeCandidates(selected.file.include);
  const dependencies=[];
  for(const uriValue of [...new Set(refs)]){
+  if(uriValue.startsWith('data:'))continue;
   const uri=safeLocal(uriValue);
-  if(uri.startsWith('data:'))continue;
   const item=includes.find(x=>x.hint===uri||x.hint.endsWith('/'+uri)||
     path.posix.basename(new URL(x.file.url).pathname)===path.posix.basename(uri));
   const desc=item?.file??{url:new URL(uri,source).href};
