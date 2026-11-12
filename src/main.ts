@@ -65,15 +65,13 @@ function dressShoreWithScannedAssets():void {
   if(!rock||!shrub)return;
   const oldPebbles=scene.getObjectByName('池岸自然石占位');
   if(oldPebbles)oldPebbles.visible=false;
+  // Keep scanned rock groups sparse until real-device performance is measured.
   const rocks:Array<[number,number,number]>=[
-    [-5.2,2.2,.7],[-3,1.5,.76],[-.8,1,.55],[1.6,.8,.72],
-    [4.3,1.1,.8],[6.7,1.9,.65],[9.2,3,.7],[10.3,5,.75],
-    [10,7.6,.68],[7.8,9.3,.8],[4.3,10,.6],[.9,9.9,.67],
-    [-2.8,8.8,.7],[-5,6.2,.73]
+    [-5.2,2.2,.7],[-.8,1,.55],[4.3,1.1,.8],
+    [9.2,3,.7],[7.8,9.3,.8],[-2.8,8.8,.7]
   ];
   const shrubs:Array<[number,number,number]>=[
-    [-8.8,-5.1,.8],[-7.6,-7.3,1.1],[10.8,-5.7,.9],
-    [9.6,-7.4,.85],[5.7,-8.4,.73],[11.9,1.2,.95]
+    [-8.8,-5.1,.8],[10.8,-5.7,.9],[5.7,-8.4,.73]
   ];
   function placeCopies(base:THREE.Object3D,locations:Array<[number,number,number]>,prefix:string){
     locations.forEach(([x,z,scale],i)=>{

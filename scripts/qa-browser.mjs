@@ -16,14 +16,19 @@ try{
   page.on('pageerror',error=>errors.push('pageerror: '+error.message));
   page.on('console',message=>{if(message.type()==='error')errors.push('console: '+message.text());});
   const response=await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle',timeout:30000});
-  await page.waitForFunction(()=>document.body.dataset.sceneReady==='true',{timeout:30000});
+  const tag=viewport.width+'x'+viewport.height;
+  await page.waitForFunction(()=>['true','error'].includes(document.body.dataset.sceneReady),null,{timeout:45000});
+  const state=await page.evaluate(()=>({ready:document.body.dataset.sceneReady,status:document.querySelector('#scene-status')?.textContent}));
+  if(state.ready==='error'){
+    await page.screenshot({path:path.join(root,'load-error-'+tag+'.png')});
+    throw new Error('R1 model initialization failed at '+tag+': '+state.status);
+  }
   await page.waitForTimeout(1400);
   const first=await page.evaluate(()=>{
    const canvas=document.querySelector('#garden-canvas');
    const gl=canvas.getContext('webgl2')||canvas.getContext('webgl');
    return {ready:document.body.dataset.sceneReady,webgl:!!gl,metrics:document.querySelector('#metrics')?.textContent};
   });
-  const tag=viewport.width+'x'+viewport.height;
   await page.screenshot({path:path.join(root,'morning-'+tag+'.png')});
   await page.getByRole('button',{name:'薄暮'}).click();
   await page.waitForTimeout(500);
