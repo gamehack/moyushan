@@ -9,7 +9,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,3 +18,22 @@ jobs:
       - run: npm install --no-package-lock
       - run: npm test
       - run: npm run build
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Chromium visual and interaction QA
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/moyushan-preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid"' EXIT
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:4173/ > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:browser
+      - name: Retain visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r1-chromium-visual-evidence
+          path: artifacts/visual/
+          if-no-files-found: warn
