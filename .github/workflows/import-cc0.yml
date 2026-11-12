@@ -1,0 +1,39 @@
+name: Import reviewed Poly Haven CC0 assets
+on:
+  push:
+    branches: [feature/r1-tea-pavilion]
+    paths:
+      - scripts/sync-cc0.mjs
+      - .github/workflows/import-cc0.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    if: github.repository == 'gamehack/moyushan'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/r1-tea-pavilion
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download and verify CC0 model files
+        run: node scripts/sync-cc0.mjs
+      - name: Commit imported assets to isolated development branch
+        run: |
+          git config user.name "moyushan-asset-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/polyhaven/ public/assets/scene.json docs/CC0-IMPORTS.json
+          git diff --cached --check
+          git diff --cached --quiet || git commit -m "assets: vendor verified Poly Haven CC0 previews"
+          git push origin HEAD:feature/r1-tea-pavilion
+      - name: Retain import manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc0-import-ledger
+          path: docs/CC0-IMPORTS.json
+          if-no-files-found: ignore

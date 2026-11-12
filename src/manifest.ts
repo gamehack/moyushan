@@ -32,8 +32,8 @@ export function parseManifest(value: unknown): SceneManifest {
     if (!item || typeof item !== 'object') throw new Error('Invalid scene asset');
     const asset = item as Record<string, unknown>;
     if (typeof asset.id !== 'string' || !asset.id.trim() || ids.has(asset.id)) throw new Error('Missing or duplicate asset id');
-    if (typeof asset.url !== 'string' || !/^\/assets\/[a-zA-Z0-9_./-]+\.glb$/.test(asset.url) || asset.url.includes('..')) {
-      throw new Error('Invalid local GLB path for asset ' + String(asset.id));
+    if (typeof asset.url !== 'string' || !/^\/assets\/[a-zA-Z0-9_./-]+\.gl(?:b|tf)$/.test(asset.url) || asset.url.includes('..')) {
+      throw new Error('Invalid local glTF/GLB path for asset ' + String(asset.id));
     }
     if (!isVec3(asset.position)) throw new Error('Invalid position for ' + asset.id);
     if (asset.scale !== undefined && (typeof asset.scale !== 'number' || !Number.isFinite(asset.scale) || asset.scale <= 0)) throw new Error('Invalid scale for ' + asset.id);
